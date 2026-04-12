@@ -23,7 +23,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms <280>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
@@ -33,7 +33,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms <280>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
@@ -43,7 +43,7 @@
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
-            tapping-term-ms <280>;
+            tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&sk>;
@@ -75,6 +75,12 @@
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp DOT>, <&kp RPAR>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        kpmmN1: mod_morph_one {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp N1>, <&kp TILDE>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
     };
@@ -159,7 +165,7 @@
         };
         combo_reset_right {
             timeout-ms = <20>;
-            layers = <FUNC>;
+            layers = <5>;
             key-positions = <26 27 28>;
             require-prior-idle-ms = <150>;
             bindings = <&bootloader>;
@@ -168,7 +174,7 @@
         // Switch to NumLk mode
         combo_mins_left {
             timeout-ms = <20>;
-            layers = <NSYM>;
+            layers = <1>;
             key-positions = <12 13>;
             require-prior-idle-ms = <150>;
             bindings = <&kp TAB>;
@@ -186,12 +192,12 @@
 
     macros {
         ga: game_alpha {
-            compatible = "zmk,behavior-macro";
+            compatible = "zmk,behavior-macro-one-param";
             #binding-cells = <1>;
             bindings
                 = <&to 0>
                 , <&macro_param_1to1>
-                , <&kp MACRO_PLACEHOLDERs>
+                , <&kp MACRO_PLACEHOLDER>
             ;
         };
     };
@@ -211,7 +217,7 @@
            &ss NSYM A  &kp R     &ht LSFT S  &kp T      &kp G          &kp M      &kp N     &ht RSFT E  &kp I      &kp O
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  Z       │  X       │  C       │  D       │  V       │   │  K       │  H      (:) , (    (;) . )    (!) / ?     │
-            &kp Z      &kp X      &kp C      &kpmmd     &kpmmv         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
+            &kp Z      &kp X      &kp C      &kpmmD     &kpmmV         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 |  Esc/Fn  |  _/Ex    |   | ⬆️/1#    |  ↩️/Fn   |
                                          &ss FUNC ESC &ss EXTE SPACE &st NSYM RSFT &ss FUNC RET
@@ -226,14 +232,14 @@
             &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &trans     &trans     &kp GRAVE   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  . >     │  1 ~     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {/⬆️    │  }       │          │
-            &kp DOT    &kpmmN1    &kp N2     &kp N3     &kp EQUAL      &trans     &kp MENU &ht RSFT LCBR &kp RCBR  &trans   
+            &kp DOT    &kpmmN1    &kp N2     &kp N3     &kp EQUAL      &trans     &kp K_APP &ht RSFT LBRC &kp RBRC  &trans   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  , <     │  4 $     │  5 %     │  6 ^     │          │   │          │ = +      │  <       │  >       │  \ |     │
             &kp COMMA  &kp N4     &kp N5     &kp N6     &trans         &trans     &kp EQUAL  &kp LT     &kp GT     &kp BSLH   
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 |          |  0/Ex    |   | XXXXXXXX |          |
                                              &trans    &ss EXTE N0     &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯lz
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
@@ -241,10 +247,10 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  NumLk   │  DEL     │  TAB     │  PRINT   │  LOCK    │   │  INS     │  HOME    │  PGDN    │  PGUP    │  END     │
-            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp M(L)       &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
+            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp G(L)       &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  META    │  ALT     │  SHIFT   │  CTRL    │  ↩️      │   │          │  LEFT    │  DOWN    │  UP      │  RIGHT   |
-            &sk LMET   &sk LALT   &sk LALT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
+            &sk LGUI   &sk LALT   &sk LALT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  UNDO    │  CUT     │  COPY    │  PASTE   │          │   │          │  BSPC    │  TAB     │          │   DEL    │
             &kp C(Z)   &kp C(X)   &kp C(C)   &kp C(V)   &trans         &trans     &kp BSPC   &kp TAB     &trans     &kp DEL     
