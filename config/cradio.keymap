@@ -7,62 +7,58 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 
-// Home row mods macro.
-#define HRML(k1, k2, k3) &ht LALT k1 &ht LSHFT k2 &ht LCTRL k3
-#define HRMR(k1,k2,k3) &ht RCTRL k1 &ht RSHFT k2 &ht RALT k3
+// Layers
+#define MAIN 0
+#define NSYM 1
+#define EXTE 2
 
+#define GAME 3
+#define GNUM 4
+
+#define FUNC 5
 / {
     behaviors {
-        // General convenience behaviors
+        // urob's timeless hold taps
         ht: hold_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <175>;
+            flavor = "balanced";
+            tapping-term-ms <280>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp>, <&kp>;
+            hold-trigger-on-release;
         };
-        hp: hold_tap_hold_preferred {
+        st: shift_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <175>;
+            flavor = "balanced";
+            tapping-term-ms <280>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <100>;
-            bindings = <&kp>, <&kp>;
-        };
-        lp: layer_tap_hold_preferred {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "hold-preferred";
-            tapping-term-ms = <175>;
-            quick-tap-ms = <175>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
+            hold-trigger-on-release;
         };
-        tog_on: toggle_layer_on_only {
-            compatible = "zmk,behavior-toggle-layer";
-            #binding-cells = <1>;
-            display-name = "Toggle Layer On";
-            toggle-mode = "on";
-        };
-        tog_off: toggle_layer_off_only {
-            compatible = "zmk,behavior-toggle-layer";
-            #binding-cells = <1>;
-            display-name = "Toggle Layer Off";
-            toggle-mode = "off";
+        ss: shift_stick {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            bindings = <&mo>, <&sk>;
+            hold-trigger-on-release;
         };
 
         // Mod morph sets.
-        kpmmd: mod_morph_d {
+        kpmmD: mod_morph_d {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp D>, <&kp V>;
             mods = <(MOD_LCTL|MOD_RCTL)>;
             keep-mods = <(MOD_LCTL|MOD_RCTL)>;
         };
-        kpmmv: mod_morph_v {
+        kpmmV: mod_morph_v {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp V>, <&kp D>;
@@ -81,254 +77,144 @@
             bindings = <&kp DOT>, <&kp RPAR>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-
-        // Mod-morph for SHIFT+NUM+R = TILDE is complicated
-        // as it is both a mod-morph *and* a home-row mod.
-        kpmmET: mod_morph_one {
-            compatible = "zmk,behavior-mod-morph";
-            #binding-cells = <0>;
-            bindings = <&kp N1>, <&kp TILDE>;
-            mods = <(MOD_LSFT|MOD_RSFT)>;
-        };
-        kpET: hold_tap_one {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <175>;
-            quick-tap-ms = <100>;
-            require-prior-idle-ms = <100>;
-            bindings = <&kp>, <&kpmmET>;
-        };
     };
 
     combos {
         compatible = "zmk,combos";
         
-        // Normal mode combos.
-        combo_esc {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <30 31>;
-            require-prior-idle-ms = <100>;
-            bindings = <&hp LS(LCTRL) ESC>;
-        };
-        combo_kpret { // Note: maybe use keypad return for this?
-            timeout-ms = <20>;
-            layers = <1>;
-            key-positions = <30 31>;
-            require-prior-idle-ms = <100>;
-            bindings = <&ht LS(LCTRL) RET>;
-        };
-        combo_app {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <32 33>;
-            require-prior-idle-ms = <100>;
-            bindings = <&ht LS(LCTRL) K_APP>;
-        };
-        combo_bspc {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <18 19>;
-            require-prior-idle-ms = <100>;
-            bindings = <&kp BSPC>;
-        };
+        // Normal mode combos
+        
         combo_tab {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <12 13>;
-            require-prior-idle-ms = <100>;
-            bindings = <&ht LS(LCTRL) TAB>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp TAB>;
+        };
+        combo_esc {
+            timeout-ms = <20>;
+            layers = <0>;
+            key-positions = <11 12>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp ESC>;
+        };
+
+        combo_star {
+            timeout-ms = <20>;
+            layers = <0>;
+            key-positions = <6 7>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp STAR>;
         };
         combo_minus {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <16 17>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp MINUS>;
         };
         combo_under {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <17 18>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp UNDER>;
+        };
+        combo_bspc {
+            timeout-ms = <20>;
+            layers = <0>;
+            key-positions = <18 19>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp BSPC>;
         };
         combo_colon {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <26 27>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp COLON>;
         };
         combo_semi {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <27 28>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp SEMI>;
         };
         combo_excl {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <28 29>;
-            require-prior-idle-ms = <100>;
+            require-prior-idle-ms = <150>;
             bindings = <&kp EXCL>;
         };
 
-        // Vertical combos
-        // combo_left {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <6 16>;
-        //     bindings = <&kp LEFT>;
-        // };
-        // combo_down {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <7 17>;
-        //     bindings = <&kp DOWN>;
-        // };
-        // combo_up {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <8 18>;
-        //     bindings = <&kp UP>;
-        // };
-        // combo_right {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <9 19>;
-        //     bindings = <&kp RIGHT>;
-        // };
-
-        // combo_eql {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <16 26>;
-        //     bindings = <&kp EQUAL>;
-        // };
-        // combo_lbrc {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <17 27>;
-        //     bindings = <&kp LBRC>;
-        // };
-        // combo_rbrc {
-        //     timeout-ms = <20>;
-        //     layers = <0>;
-        //     key-positions = <18 28>;
-        //     bindings = <&kp RBRC>;
-        // };
-
-        // Switch between normal mode and gaming mode.
-        combo_def {
+        // Resets
+        combo_reset_left {
             timeout-ms = <20>;
-            layers = <2>;
+            layers = <FUNC>;
             key-positions = <21 22 23>;
-            bindings = <&tog 2>;
+            require-prior-idle-ms = <150>;
+            bindings = <&bootloader>;
         };
-        combo_def_null{
+        combo_reset_right {
+            timeout-ms = <20>;
+            layers = <FUNC>;
+            key-positions = <26 27 28>;
+            require-prior-idle-ms = <150>;
+            bindings = <&bootloader>;
+        };
+
+        // Switch to NumLk mode
+        combo_mins_left {
+            timeout-ms = <20>;
+            layers = <NSYM>;
+            key-positions = <12 13>;
+            require-prior-idle-ms = <150>;
+            bindings = <&kp TAB>;
+        };
+
+        // Switch to gaming
+        combo_game {
             timeout-ms = <20>;
             layers = <0>;
-            key-positions = <21 22 23>;
-            bindings = <&none>;
-        };
-        combo_gam {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <11 2 13>;
-            bindings = <&tog 2>;
-        };
-
-        // Gaming mode combos. 
-        // Mainly X3/X4 combos for middle keys.
-        combo_gam_T {
-            timeout-ms = <20>;
-            layers = <2>;
-            key-positions = <3 4>;
-            bindings = <&kp T>;
-        };
-        combo_gam_G {
-            timeout-ms = <20>;
-            layers = <2>;
-            // Use a vertical combo to avoid 50ms latency on D key
-            // Important when playing Osu!
-            // Top one is more easily reachable during gameplay.
-            key-positions = <4 14>; 
-            bindings = <&kp G>;
-        };
-        combo_gam_B {
-            timeout-ms = <20>;
-            layers = <2>;
-            key-positions = <23 24>;
-            bindings = <&kp B>;
-        };
-        combo_gam_Y {
-            timeout-ms = <20>;
-            layers = <4>;
-            key-positions = <3 4>;
-            bindings = <&kp Y>;
-        };
-        combo_gam_H {
-            timeout-ms = <20>;
-            layers = <4>;
-            key-positions = <13 14>;
-            bindings = <&kp H>;
-        };
-        combo_gam_N {
-            timeout-ms = <20>;
-            layers = <4>;
-            key-positions = <23 24>;
-            bindings = <&kp N>;
-        };
-        combo_gam_LBRC {
-            timeout-ms = <20>;
-            layers = <3>;
-            key-positions = <3 4>;
-            bindings = <&kp LBRC>;
-        };
-        combo_gam_KPENT {
-            timeout-ms = <20>;
-            layers = <3>;
-            key-positions = <13 14>;
-            bindings = <&kp KP_ENTER>;
-        };
-        combo_gam_RBRC {
-            timeout-ms = <20>;
-            layers = <3>;
-            key-positions = <23 24>;
-            bindings = <&kp RBRC>;
-        };
-        combo_gam_esc {
-            timeout-ms = <20>;
-            layers = <2>;
             key-positions = <30 31>;
-            bindings = <&lp 4 ESC>;
+            require-prior-idle-ms = <100>;
+            bindings = <&tog GAME>;
         };
-        combo_gam_M {
-            timeout-ms = <20>;
-            layers = <2>;
-            key-positions = <24 30>;
-            bindings = <&lp 6 M>;
+    };
+
+    macros {
+        ga: game_alpha {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <1>;
+            bindings
+                = <&to 0>
+                , <&macro_param_1to1>
+                , <&kp MACRO_PLACEHOLDERs>
+            ;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
+
+        // Standard, two-handed layers.
+
         default_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  Q       │  W       │  F       │  P       │  B       │   │  J       │  L       │  U       │  Y       │  ' "     │
-            &lt 5 Q    &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp SQT
+            &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp SQT
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  R       │  S       │  T       │  G       │   │  M       │  N       │  E       │  I       │ O        │
-            &lt 1 A    HRML(R,        S,         T)     &kp G          &kp M      HRMR(N,        E,         I)     &kp O
+        //│  A       │  R       │  S/⬆️    │  T       │  G       │   │  M       │  N      (-) E/⬆️   (_)  I      │  O       │
+           &ss NSYM A  &kp R     &ht LSFT S  &kp T      &kp G          &kp M      &kp N     &ht RSFT E  &kp I      &kp O
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  D       │  V       │   │  K       │  H       │ , (      │ . )      │ / ?      │
-            &lt 5 Z    &ht LGUI X &kp C      &kpmmd     &kpmmv         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
+        //│  Z       │  X       │  C       │  D       │  V       │   │  K       │  H      (:) , (    (;) . )    (!) / ?     │
+            &kp Z      &kp X      &kp C      &kpmmd     &kpmmv         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                        &hp LSHFT SPACE &hp LCTRL TAB  &lp 5 RET  &lp 1 BSPC
+        //                                 |  Esc/Fn  |  _/Ex    |   | ⬆️/1#    |  ↩️/Fn   |
+                                         &ss FUNC ESC &ss EXTE SPACE &st NSYM RSFT &ss FUNC RET
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -336,16 +222,35 @@
         nsym_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ ` ~      │  7       │  8       │  9       │          │   │          │          │ [ {      │ ] }      │ ` ~      │
-            &kp GRAVE  &kp N7     &kp N8     &kp N9     &trans          &trans    &kp PLUS   &kp LBKT   &kp RBKT   &kp GRAVE
+        //│  ~       │  7 &     │  8 *     │  9 (     │          │   │          │  🌍      │  [       │  ]       │  ` ~     │
+            &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &trans     &trans     &kp GRAVE   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │  1       │  2       │  3       │          │   │          │ LEFT     │ DOWN     │ UP       │ RIGHT    │
-            &trans  &kpET LALT 0 &ht LSFT N2 &ht LCTL N3 &trans        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT
+        //│  . >     │  1 ~     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {/⬆️    │  }       │          │
+            &kp DOT    &kpmmN1    &kp N2     &kp N3     &kp EQUAL      &trans     &kp MENU &ht RSFT LCBR &kp RCBR  &trans   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │  4       │  5       │ 6        │          │   │          │ = +      │ <        │ >        │ \ |      │
-            &trans     &kp N4     &kp N5     &kp N6     &trans          &trans    &kp EQUAL  &kp LT     &kp GT     &kp BSLH
+        //│  , <     │  4 $     │  5 %     │  6 ^     │          │   │          │ = +      │  <       │  >       │  \ |     │
+            &kp COMMA  &kp N4     &kp N5     &kp N6     &trans         &trans     &kp EQUAL  &kp LT     &kp GT     &kp BSLH   
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                         &hp LSHFT N0 &hp LCTRL BSPC   &trans     &trans
+        //                                 |          |  0/Ex    |   | XXXXXXXX |          |
+                                             &trans    &ss EXTE N0     &trans     &trans
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯lz
+            >;
+        };
+
+        exte_layer {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│  NumLk   │  DEL     │  TAB     │  PRINT   │  LOCK    │   │  INS     │  HOME    │  PGDN    │  PGUP    │  END     │
+            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp M(L)       &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  META    │  ALT     │  SHIFT   │  CTRL    │  ↩️      │   │          │  LEFT    │  DOWN    │  UP      │  RIGHT   |
+            &sk LMET   &sk LALT   &sk LALT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│  UNDO    │  CUT     │  COPY    │  PASTE   │          │   │          │  BSPC    │  TAB     │          │   DEL    │
+            &kp C(Z)   &kp C(X)   &kp C(C)   &kp C(V)   &trans         &trans     &kp BSPC   &kp TAB     &trans     &kp DEL     
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+        //                                 |          | XXXXXXXX |   |  ↩️      |          |
+                                              &trans    &trans         &kp RET    &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -353,16 +258,17 @@
         game_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  LALT    │  Q       │  W       │  E       │  R       │   │  Y       │  U       │  I       │  O       │  P       │
-            &kp LALT   &kp Q      &kp W      &kp E      &kp R          &kp Y      &kp U      &kp I      &kp O      &kp P
+        //│  ESC     │  Q       │  W       │  E       |  R       │   │  Y       │  U       │  I       │  O       │  P       │
+            &kp ESC    &kp Q      &kp W      &kp E      &kp R          &kp Y      &kp U      &kp I      &kp O      &kp P
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  LSFT    │  A       │  S       │  D       │  F       │   │  H       │  J       │  K       │  L       │  ; :     │
             &kp LSFT   &kp A      &kp S      &kp D      &kp F          &kp H      &kp J      &kp K      &kp L      &kp SEMI
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LCTL    │  Z       │  X       │  C       │  V       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp LCTL   &kp Z      &kp X      &kp C      &kp V          &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH
+        //│  LCTL    │  Z       │  X       │  C       │  V       │   │  N       │  M       │ , <      │ . >      │ / -> Aa  │
+            &kp LCTL   &kp Z      &kp X      &kp C      &kp V          &kp N      &kp M      &kp COMMA  &kp DOT    &ga FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &kp SPACE &lp 3 TAB        &kp RET   &kp BSPC
+        //                                 |  1#      |  _       |   |  Aa      | ↩️ -> Aa |
+                                             &mo GNUM   &kp SPACE      &to 0      &ga RET
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -370,67 +276,53 @@
         gnum_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  LALT    │  7       │  8       │  9       │  = +     │   │  Y       │  HOME    │  PGDN    │  PGUP    │  END     │
-            &kp LALT   &kp N7     &kp N8     &kp N9     &kp EQUAL      &kp Y      &kp HOME  &kp PG_DN  &kp PG_UP   &kp END
+        //│  TAB     │  T       │  G       │  M       │  Y       │   │  = +     │  7       │  8       │  9       │  0       |
+            &kp TAB    &kp T      &kp G      &kp M     &kp T          &kp EQUAL  &kp N7     &kp N8     &kp N9     &kp N0
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LSFT    │  1       │  2       │  3       │  0       │   │  H       │ LEFT     │ DOWN     │ UP       │ RIGHT    │
-            &kp LSFT   &kp N1     &kp N2     &kp N3     &kp N0         &kp H      &kp J      &kp K      &kp L      &kp SEMI
+        //│  LSFT    │  1       │  2       │  3       │  H       │   │  ` ~     │  LEFT    │  DOWN    │  UP      │  RIGHT   │
+            &kp LSFT   &kp N1     &kp N2     &kp N3     &kp G          &kp GRAVE  &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LCTL    │  4       │  5       │  6       │  - _     │   │  N       │  MUTE    │  VOLD    │  VOLU    │          │
-            &kp LCTL   &kp N4     &kp N5     &kp N6     &kp MINUS      &kp N     &kp C_MUTE &kp C_VOL_DN &kp C_VOL_UP &trans
+        //│  LCTL    │  4       │  5       │  6       │  7       │   │  - _     │  HOME    │  PGDN    │  PGUP    │  END     │
+            &kp LCTL   &kp N4     &kp N5     &kp N6     &kp N7         &kp MINUS  &kp HOME  &kp PG_DN  &kp PG_UP   &kp END
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans      &kp KP_ENTER &kp BSPC
+        //                                 | XXXXXXXX |  FN      |   |  RET     |  KPRET   |
+                                              &trans    &mo FUNC       &kp RET    &kp KP_ENTER
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        gmir_layer {
+        func_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  LALT    │  P       │  O       │  I       │  U       │   │  Y       │  U       │  I       │  O       │  P       │
-            &kp LALT   &kp P      &kp O      &kp I      &kp R          &kp Y      &kp U      &kp I      &kp O      &kp P
+        //│  RESET   │  F7      │  F8      │  F9      │  F12     │   │          │          │          │          │          │
+            &to 0      &kp F7     &kp F8     &kp F9     &kp F12        &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LSFT    │  ; :     │  L       │  K       │  J       │   │  H       │  J       │  K       │  L       │  ; :     │
-            &kp LSFT   &kp SEMI   &kp L      &kp K      &kp J          &kp H      &kp J      &kp K      &kp L      &kp SEMI
+        //│          │  F1      │  F2      │  F3      │  F10     │   │          │          │          │          │          │
+            &trans     &kp F1     &kp F2     &kp F3     &kp F10        &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LCTL    │  / ?     │  . >     │  , <     │  M       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp LCTL   &kp FSLH   &kp DOT    &kp COMMA  &kp M          &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH
+        //│          │  F4      │  F5      │  F6      │  F11     │   │          │          │          │          │          │
+            &trans     &kp F4     &kp F5     &kp F6     &kp F11        &trans     &trans     &trans     &trans     &trans     
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans        &kp RET   &kp BSPC
+        //                                 | XXXXXXXX | -------- |   |          |          |
+                                              &trans    &none          &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        fn_layer {
+        blank_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ F12      │  F7      │  F8      │  F9      │  F12     │   │ BCLR     │  B1      │  B2      │  B3      │  B2BL    │
-            &bootloader &kp F7     &kp F8     &kp F9     &kp F12      &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bootloader
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ F10      │  F1      │  F2      │  F3      │  F10     │   │ B/U      │  HOME    │  PGDN    │  PGUP    │  END     │
-            &kp F10     HRML(F1,    F2,        F3)       &kp F10      &out OUT_TOG &kp HOME  &kp PG_DN  &kp PG_UP   &kp END
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ F11      │  F4      │e  F5      │  F6      │  F11     │   │          │  MUTE    │  VOLD    │  VOLU    │          │
-            &kp F11    &kp F4     &kp F5     &kp F6     &kp F11        &trans  &kp C_MUTE &kp C_VOL_DN &kp C_VOL_UP &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans     
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                        &hp LSHFT PSCRN &hp LCTRL DEL  &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
-
-        gfnc_layer {
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ DEL      │  F7      │  F8      │  F9      │  F12     │   │ BCLR     │  B1      │  B2      │  B3      │  B2BL    │
-         &ht LALT DEL  &kp F7     &kp F8     &kp F9     &kp F12      &bt BT_CLR  &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bootloader
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ PSCRN    │  F1      │  F2      │  F3      │  F10     │   │ B/U      │  HOME    │  PGDN    │  PGUP    │  END     │
-        &ht LSFT PSCRN &kp F1     &kp F2     &kp F3     &kp F10      &out OUT_TOG &kp HOME  &kp PG_DN  &kp PG_UP   &kp END
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ F11      │  F4      │  F5      │  F6      │          │   │          │  MUTE    │  VOLD    │  VOLU    │          │
-         &ht LCTL F11  &kp F4     &kp F5     &kp F6     &trans         &trans  &kp C_MUTE &kp C_VOL_DN &kp C_VOL_UP &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                        &hp LSHFT PSCRN &hp LCTRL DEL  &trans     &trans
+        //                                 |          |          |   |          |          |
+                                              &trans    &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
