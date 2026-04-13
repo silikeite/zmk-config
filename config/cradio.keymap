@@ -16,37 +16,41 @@
 #define GNUM 4
 
 #define FUNC 5
+
+#define HRML(k1, k2, k3, k4) &ht LGUI k1 &ht LALT k2 &ht LSHFT k3 &ht LCTRL k4
+#define HRMR(k1, k2, k3, k4) &ht RCTRL k1 &ht RSHFT k2 &ht RALT k3 &ht RGUI k4
+
 / {
     behaviors {
         // urob's timeless hold taps
-        ht: hold_tap {
+        ht: home_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&kp>, <&kp>;
+            bindings = <&sk>, <&kp>;
             hold-trigger-on-release;
         };
-        st: shift_tap {
+        tt: thumb_tap {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            flavor = "balanced";
+            flavor = "hold-preferred";
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
             bindings = <&mo>, <&kp>;
             hold-trigger-on-release;
         };
-        ss: shift_stick {
+        ts: thumb_stick {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
             flavor = "balanced";
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&mo>, <&sk>;
+            bindings = <&sk>, <&sk>;
             hold-trigger-on-release;
         };
 
@@ -88,22 +92,7 @@
     combos {
         compatible = "zmk,combos";
         
-        // Normal mode combos
-        
-        combo_tab {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <12 13>;
-            require-prior-idle-ms = <150>;
-            bindings = <&kp TAB>;
-        };
-        combo_esc {
-            timeout-ms = <20>;
-            layers = <0>;
-            key-positions = <11 12>;
-            require-prior-idle-ms = <150>;
-            bindings = <&kp ESC>;
-        };
+        // Normal mode cob
 
         combo_star {
             timeout-ms = <20>;
@@ -165,7 +154,7 @@
         };
         combo_reset_right {
             timeout-ms = <20>;
-            layers = <5>;
+            layers = <FUNC>;
             key-positions = <26 27 28>;
             require-prior-idle-ms = <150>;
             bindings = <&bootloader>;
@@ -174,19 +163,18 @@
         // Switch to NumLk mode
         combo_mins_left {
             timeout-ms = <20>;
-            layers = <1>;
+            layers = <NSYM>;
             key-positions = <12 13>;
             require-prior-idle-ms = <150>;
-            bindings = <&kp TAB>;
+            bindings = <&kp MINUS>;
         };
 
-        // Switch to gaming
-        combo_game {
+        combo_esc {
             timeout-ms = <20>;
             layers = <0>;
             key-positions = <30 31>;
             require-prior-idle-ms = <100>;
-            bindings = <&tog GAME>;
+            bindings = <&kp ESC>;
         };
     };
 
@@ -213,14 +201,14 @@
         //│  Q       │  W       │  F       │  P       │  B       │   │  J       │  L       │  U       │  Y       │  ' "     │
             &kp Q      &kp W      &kp F      &kp P      &kp B          &kp J      &kp L      &kp U      &kp Y      &kp SQT
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  R       │  S/⬆️    │  T       │  G       │   │  M       │  N      (-) E/⬆️   (_)  I      │  O       │
-           &ss NSYM A  &kp R     &ht LSFT S  &kp T      &kp G          &kp M      &kp N     &ht RSFT E  &kp I      &kp O
+        //│  A       │  R       │  S       │  T       │  G       │   │  M       │  N      (-) E      (_)  I      │  O       │
+            HRML(A,     R,         S,         T)        &kp G          &kp M      HRMR(N,     E,          I,        O)
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  Z       │  X       │  C       │  D       │  V       │   │  K       │  H      (:) , (    (;) . )    (!) / ?     │
             &kp Z      &kp X      &kp C      &kpmmD     &kpmmV         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 |  Esc/Fn  |  _/Ex    |   | ⬆️/1#    |  ↩️/Fn   |
-                                         &ss FUNC ESC &ss EXTE SPACE &st NSYM RSFT &ss FUNC RET
+        //                                 |  Tab/Ex  |  _/Ex    |   | ⬆️/1#    |  ↩️/Fn   |
+                                         &tt FUNC TAB &tt EXTE SPACE &ts NSYM RSFT &tt FUNC RET
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -229,16 +217,16 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  ~       │  7 &     │  8 *     │  9 (     │          │   │          │  🌍      │  [       │  ]       │  ` ~     │
-            &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &trans     &trans     &kp GRAVE   
+            &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &ht LBKT   &ht RBKT   &kp GRAVE   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  . >     │  1 ~     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {/⬆️    │  }       │          │
-            &kp DOT    &kpmmN1    &kp N2     &kp N3     &kp EQUAL      &trans     &kp K_APP &ht RSFT LBRC &kp RBRC  &trans   
+        //│  . >     │  1 !     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {       │  }       │          │
+            HRML(DOT,  N1,        N2,        N3)        &kp EQUAL      &trans     HRMR(KC_APP, LBRC,    RBRC,        SCLN)  
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  , <     │  4 $     │  5 %     │  6 ^     │          │   │          │ = +      │  <       │  >       │  \ |     │
             &kp COMMA  &kp N4     &kp N5     &kp N6     &trans         &trans     &kp EQUAL  &kp LT     &kp GT     &kp BSLH   
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 |          |  0/Ex    |   | XXXXXXXX |          |
-                                             &trans    &ss EXTE N0     &trans     &trans
+                                             &trans    &tt EXTE N0     &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -246,17 +234,17 @@
         exte_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  NumLk   │  DEL     │  TAB     │  PRINT   │  LOCK    │   │  INS     │  HOME    │  PGDN    │  PGUP    │  END     │
-            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp G(L)       &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
+        //│  NumLk   │  DEL     │  TAB     │  PRINT   │  BSPC    │   │  INS     │  HOME    │  PGDN    │  PGUP    │  END     │
+            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp BSPC      &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  META    │  ALT     │  SHIFT   │  CTRL    │  ↩️      │   │          │  LEFT    │  DOWN    │  UP      │  RIGHT   |
             &sk LGUI   &sk LALT   &sk LALT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  UNDO    │  CUT     │  COPY    │  PASTE   │          │   │          │  BSPC    │  TAB     │          │   DEL    │
-            &kp C(Z)   &kp C(X)   &kp C(C)   &kp C(V)   &trans         &trans     &kp BSPC   &kp TAB     &trans     &kp DEL     
+        //│  UNDO    │  CUT     │  COPY    │  PASTE   │          │   │          │  RET     │  TAB     │          │   DEL    │
+            &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &trans         &trans      &kp RET    &kp TAB     &trans     &kp DEL     
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 |          | XXXXXXXX |   |  ↩️      |          |
-                                              &trans    &trans         &kp RET    &trans
+        //                                 |          | XXXXXXXX |   |  BSPC    |          |
+                                              &trans    &trans         &kp BSPC  &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -304,7 +292,7 @@
             &to 0      &kp F7     &kp F8     &kp F9     &kp F12        &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │  F1      │  F2      │  F3      │  F10     │   │          │          │          │          │          │
-            &trans     &kp F1     &kp F2     &kp F3     &kp F10        &trans     &trans     &trans     &trans     &trans     
+            &to GAME   &kp F1     &kp F2     &kp F3     &kp F10        &trans     &trans     &trans     &trans     &trans     
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │  F4      │  F5      │  F6      │  F11     │   │          │          │          │          │          │
             &trans     &kp F4     &kp F5     &kp F6     &kp F11        &trans     &trans     &trans     &trans     &trans     
