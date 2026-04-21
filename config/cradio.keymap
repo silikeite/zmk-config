@@ -50,7 +50,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&sk>, <&sk>;
+            bindings = <&sl>, <&sk>;
             hold-trigger-on-release;
         };
 
@@ -217,10 +217,10 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  ~       │  7 &     │  8 *     │  9 (     │          │   │          │  🌍      │  [       │  ]       │  ` ~     │
-            &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &ht LBKT   &ht RBKT   &kp GRAVE   
+            &kp TILDE  &kp N7     &kp N8     &kp N9     &trans         &trans     &kp LANG1  &kp LBKT   &kp RBKT   &kp GRAVE   
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  . >     │  1 !     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {       │  }       │          │
-            HRML(DOT,  N1,        N2,        N3)        &kp EQUAL      &trans     HRMR(KC_APP, LBRC,    RBRC,        SCLN)  
+        //│  . >     │  1 !     │  2 @     │  3 #     │  = +     │   │          │  📋      │  {       │  }       │  ; :     │
+            HRML(DOT,  N1,        N2,        N3)        &kp EQUAL      &trans     HRMR(K_APP, LBRC,     RBRC,      SEMI)  
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  , <     │  4 $     │  5 %     │  6 ^     │          │   │          │ = +      │  <       │  >       │  \ |     │
             &kp COMMA  &kp N4     &kp N5     &kp N6     &trans         &trans     &kp EQUAL  &kp LT     &kp GT     &kp BSLH   
@@ -235,13 +235,13 @@
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  NumLk   │  DEL     │  TAB     │  PRINT   │  BSPC    │   │  INS     │  HOME    │  PGDN    │  PGUP    │  END     │
-            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp BSPC      &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
+            &tog NSYM  &kp DEL    &kp TAB    &kp PSCRN  &kp BSPC       &kp INS    &kp HOME  &kp PG_DN  &kp PG_UP   &kp END 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  META    │  ALT     │  SHIFT   │  CTRL    │  ↩️      │   │          │  LEFT    │  DOWN    │  UP      │  RIGHT   |
-            &sk LGUI   &sk LALT   &sk LALT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
+            &sk LGUI   &sk LALT   &sk LSFT   &sk LCTL   &kp RET        &trans     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT      
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│  UNDO    │  CUT     │  COPY    │  PASTE   │          │   │          │  RET     │  TAB     │          │   DEL    │
-            &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &trans         &trans      &kp RET    &kp TAB     &trans     &kp DEL     
+            &kp LC(Z)  &kp LC(X)  &kp LC(C)  &kp LC(V)  &trans         &trans     &kp RET    &kp TAB     &trans     &kp DEL     
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 |          | XXXXXXXX |   |  BSPC    |          |
                                               &trans    &trans         &kp BSPC  &trans
