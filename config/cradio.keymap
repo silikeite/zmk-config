@@ -50,7 +50,7 @@
             tapping-term-ms = <280>;
             quick-tap-ms = <175>;
             require-prior-idle-ms = <150>;
-            bindings = <&sl>, <&sk>;
+            bindings = <&sl>, <&kpmmCW>;
             hold-trigger-on-release;
         };
 
@@ -85,6 +85,12 @@
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
             bindings = <&kp N1>, <&kp TILDE>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+        kpmmCW: mod_morph_capsword {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&sk LSFT>, <&caps_word>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
     };
@@ -208,7 +214,7 @@
             &kp Z      &kp X      &kp C      &kpmmD     &kpmmV         &kp K      &kp H      &kpmmCO   &kpmmDO     &kp FSLH
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 |  Tab/Ex  |  _/Ex    |   | ⬆️/1#    |  ↩️/Fn   |
-                                         &tt FUNC TAB &tt EXTE SPACE &ts NSYM RSFT &tt FUNC RET
+                                         &tt FUNC TAB &tt EXTE SPACE &ts NSYM 0 &tt FUNC RET
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
